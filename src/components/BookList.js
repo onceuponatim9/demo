@@ -1,3 +1,4 @@
+import { Heading, Input } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 
 const BookList = () => {
@@ -44,8 +45,9 @@ const BookList = () => {
 
     return (
         <>
-            <h1>동영상 검색 목록</h1>
-            <input type="text" placeholder="검색어 입력" onChange={changeSearch} />
+            <Heading>동영상 검색 목록</Heading>
+            <Input type="text" placeholder="검색어 입력" onChange={changeSearch} size="lg" varient="filled" />
+
             <div>
                 {bookList.map((book) => (
                     <>
