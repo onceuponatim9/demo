@@ -1,5 +1,11 @@
-import { Heading, Input } from "@chakra-ui/react";
+import { Box, Button, Heading, Input, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
+import { Icon, createIcon } from '@chakra-ui/react';
+import { TableCaption, TableContainer, Table, Thead, Tbody, Tfoot, Tr, Th, Td } from "@chakra-ui/react";
+import { MdOndemandVideo } from "react-icons/md";
+import { Stack, HStack, VStack } from '@chakra-ui/react';
+import { AiFillSun, AiFillMoon } from "react-icons/ai";
+import { IconButton } from '@chakra-ui/react';
 
 const BookList = () => {
     // useState는 화면 랜더링에 반영됨
@@ -9,6 +15,11 @@ const BookList = () => {
 
     // useRef는 화면 랜더링에 반영되지 않는 참조값
     const pageCount = useRef(1);
+
+    // Chakra UI 에서 제공하는 훅
+    const { colorMode, toggleColorMode } = useColorMode();
+    const color = useColorModeValue('red.500', 'white');
+    const buttonScheme = useColorModeValue('blackAlpha', 'whiteAlpha');
 
     const fetchBooks = async () => {
         const response = await fetch(
@@ -45,23 +56,59 @@ const BookList = () => {
 
     return (
         <>
-            <Heading>동영상 검색 목록</Heading>
+        <Box>
+            <Heading>
+                <Icon as={MdOndemandVideo} boxSize={"1.5em"} />동영상 검색 목록
+            </Heading>
+            {
+                colorMode === "light" ? 
+                <IconButton icon={<AiFillMoon />} onClick={toggleColorMode} size={"lg"} /> : 
+                <IconButton icon={<AiFillSun />} onClick={toggleColorMode} size={"lg"} />
+            }
+            
             <Input type="text" placeholder="검색어 입력" onChange={changeSearch} size="lg" varient="filled" />
-
-            <div>
-                {bookList.map((book) => (
+            
+            <TableContainer>
+                <Table variant={"striped"} colorScheme="blackAlpha">
+                    <Thead>
+                        <Tr>
+                            <Th>No</Th>
+                            <Th>Title</Th>
+                            <Th>Author</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                    {bookList.map((book, index) => (
                     <>
-                        <p>{book.title}</p>
+                    <Tr>
+                        <Td>{(page - 1) * 10 + index + 1}</Td>
+                        <Td><a href={book.url}>{book.title}</a></Td>
+                        <Td>{book.author}</Td>
+                    </Tr>
                     </>
-                ))}
-            </div>
-            <ul>
+                    ))}
+                    </Tbody>
+                    <Tfoot></Tfoot>
+                </Table>
+            </TableContainer>
+            <HStack>
                 {Array.from({length: pageCount.current}, (_, index) => (
                     <>
-                        <li onClick={e => { setPage(index + 1) }}>{index + 1}</li>
+                        <Button 
+                        colorScheme={
+                            page === index + 1 ?
+                            "red" : buttonScheme
+                        }
+                        onClick={e => { 
+                            setPage(index + 1);
+                        }}
+                        >
+                            {index + 1}
+                        </Button>
                     </>
                 ))}
-            </ul>
+            </HStack>
+        </Box>
         </>
     );
 };
