@@ -6,12 +6,13 @@ import { MdOndemandVideo } from "react-icons/md";
 import { Stack, HStack, VStack } from '@chakra-ui/react';
 import { AiFillSun, AiFillMoon } from "react-icons/ai";
 import { IconButton } from '@chakra-ui/react';
+import { Link } from "react-router-dom";
 
 const BookList = () => {
     // useState는 화면 랜더링에 반영됨
     const [bookList, setBookList] = useState([]);
     const [page, setPage] = useState(1);
-    const [search, setSearch] = useState('달고나 커피');
+    const [search, setSearch] = useState('강아지똥');
 
     // useRef는 화면 랜더링에 반영되지 않는 참조값
     const pageCount = useRef(1);
@@ -23,7 +24,7 @@ const BookList = () => {
 
     const fetchBooks = async () => {
         const response = await fetch(
-            `https://dapi.kakao.com/v2/search/vclip?query=${search}&page=${page}`,
+            `https://dapi.kakao.com/v3/search/book?query=${search}&page=${page}`,
             {
                 method: "GET",
                 headers: {
@@ -58,7 +59,7 @@ const BookList = () => {
         <>
         <Box>
             <Heading>
-                <Icon as={MdOndemandVideo} boxSize={"1.5em"} />동영상 검색 목록
+                <Icon as={MdOndemandVideo} boxSize={"1.5em"} />도서 검색 목록
             </Heading>
             {
                 colorMode === "light" ? 
@@ -75,6 +76,7 @@ const BookList = () => {
                             <Th>No</Th>
                             <Th>Title</Th>
                             <Th>Author</Th>
+                            <Th>Publisher</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -82,8 +84,9 @@ const BookList = () => {
                     <>
                     <Tr>
                         <Td>{(page - 1) * 10 + index + 1}</Td>
-                        <Td><a href={book.url}>{book.title}</a></Td>
-                        <Td>{book.author}</Td>
+                        <Td><Link to={`/book/search/${book.isbn}`}>{book.title}</Link></Td>
+                        <Td>{book.authors}</Td>
+                        <Td>{book.publisher}</Td>
                     </Tr>
                     </>
                     ))}
