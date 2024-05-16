@@ -39,30 +39,30 @@ const router = createBrowserRouter(
             children: [
                 {
                     path: "/video",
-                    element: <VideoList />,
-                    // (
-                    //     <>
-                    //         <p>추천 영상 목록 페이지</p>
-                    //     </>
-                    // ),
+                    element: 
+                    (
+                        <>
+                            <VideoList />,
+                        </>
+                    ),
                 },
                 {
                     path: "/video/list",
-                    element: <VideoList />,
-                    // (
-                    //     <>
-                    //         <p>추천 영상 목록 페이지</p>
-                    //     </>
-                    // ),
+                    element: 
+                    (
+                        <>
+                            <VideoList />
+                        </>
+                    ),
                 },
                 {
                     path: "/video/search",
-                    element: <VideoList />,
-                    // (
-                    //     <>
-                    //         <p>영상 검색 목록 페이지</p>
-                    //     </>
-                    // ),
+                    element: 
+                    (
+                        <>
+                            <VideoList />
+                        </>
+                    ),
                 },
             ],
         },
@@ -72,39 +72,39 @@ const router = createBrowserRouter(
             children: [
                 {
                     path: "/book",
-                    element: <BookList />,
-                    // (
-                    //     <>
-                    //         <p>추천 도서 목록 페이지</p>
-                    //     </>
-                    // ),
+                    element: 
+                    (
+                        <>
+                            <BookList />
+                        </>
+                    ),
                 },
                 {
                     path: "/book/list",
-                    element: <BookList />,
-                    // (
-                    //     <>
-                    //         <p>추천 도서 목록 페이지</p>
-                    //     </>
-                    // ),
+                    element: 
+                    (
+                        <>
+                            <BookList />
+                        </>
+                    ),
                 },
                 {
                     path: "/book/search",
-                    element: <BookList />,
-                    // (
-                    //     <>
-                    //         <p>도서 검색 목록 페이지</p>
-                    //     </>
-                    // ),
+                    element: 
+                    (
+                        <>
+                            <BookList />
+                        </>
+                    ),
                 },
                 {
                     path: "/book/search/:isbn",
-                    element: <BookDetail />,
-                    // (
-                    //     <>
-                    //         <p>검색 도서 상세 페이지</p>
-                    //     </>
-                    // ),
+                    element: 
+                    (
+                        <>
+                            <BookDetail />
+                        </>
+                    ),
                 },
             ],
         },

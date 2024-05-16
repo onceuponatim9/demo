@@ -7,6 +7,7 @@ import { Stack, HStack, VStack } from '@chakra-ui/react';
 import { AiFillSun, AiFillMoon } from "react-icons/ai";
 import { IconButton } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
+import BookDetail from "./BookDetail";
 
 const BookList = () => {
     // useState는 화면 랜더링에 반영됨
@@ -74,6 +75,7 @@ const BookList = () => {
                     <Thead>
                         <Tr>
                             <Th>No</Th>
+                            <Th>Thumbnail</Th>
                             <Th>Title</Th>
                             <Th>Author</Th>
                             <Th>Publisher</Th>
@@ -84,7 +86,8 @@ const BookList = () => {
                     <>
                     <Tr>
                         <Td>{(page - 1) * 10 + index + 1}</Td>
-                        <Td><Link to={`/book/search/${book.isbn}`}>{book.title}</Link></Td>
+                        <Td><img src={book.thumbnail} /></Td>
+                        <Td><Link to={`demo/book/search/${book.isbn}`}>{book.title}</Link></Td>
                         <Td>{book.authors}</Td>
                         <Td>{book.publisher}</Td>
                     </Tr>

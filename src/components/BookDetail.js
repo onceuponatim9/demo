@@ -1,58 +1,92 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from "react";
+import { Routes, Route, useParams, useSearchParams } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { Box, Button, Heading, Input, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { TableCaption, TableContainer, Table, Thead, Tbody, Tfoot, Tr, Th, Td } from "@chakra-ui/react";
 import BookList from "../components/BookList";
 
 const BookDetail = () => {
-    function BookInfo(info) {
+    const [params] = useSearchParams();
 
-        const { colorMode, toggleColorMode } = useColorMode();
-        const color = useColorModeValue('red.500', 'white');
-        const buttonScheme = useColorModeValue('blackAlpha', 'whiteAlpha');
+    console.log("params : " + params);
 
-        let {isbn} = useParams();
-        const detail = BookList.find((book) => {
-            return book.isbn === isbn;
-        });
+    const {isbn} = useParams();
+    const {title} = useParams();
+    const {author} = useParams();
+    const {publisher} = useParams();
+    const {contents} = useParams();
+    const {url} = useParams();
+    const {thumbnail} = useParams();
 
-        useEffect(() => {
-            BookInfo();
-        });
-    
-        return (
-            <TableContainer>
-                    <Table variant={"striped"} colorScheme="blackAlpha">
-                        <Thead>
-                            <Tr>
-                                <Th>Title</Th>
-                                <Th>Author</Th>
-                                <Th>Publisher</Th>
-                                <Th>Datetime</Th>
-                                <Th>ISBN</Th>
-                                <Th>Contents</Th>
-                                <Th>Price</Th>
-                                <Th>Sales_price</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                        <Tr>
-                            <Td>{detail.title}</Td>
-                            <Td>{detail.authors}</Td>
-                            <Td>{detail.publisher}</Td>
-                            <Td>{detail.datetime}</Td>
-                            <Td>{detail.isbn}</Td>
-                            <Td>{detail.contents}</Td>
-                            <Td>{detail.price}</Td>
-                            <Td>{detail.sale_price}</Td>
-                        </Tr>
-                        </Tbody>
-                        <Tfoot></Tfoot>
-                    </Table>
-                </TableContainer>
+    console.log("isbn : ", + isbn);
+
+    const [bookList, setBookList] = useState([]);
+    const [search, setSearch] = useState('강아지똥');
+
+    const fetchBooks = async () => {
+        const response = await fetch(
+            `https://dapi.kakao.com/v3/search/book?query=${isbn}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `KakaoAK ${process.env.REACT_APP_API_KEY}`,
+                },
+            }
         );
-    }
+        const data = await response.json();
+        console.log(data);
+        
+        setBookList(data.documents);
+    };
+
+    // const changeSearch = e => {
+    //     if(e.target.value.length >= 2)
+    //         setSearch(e.target.value);
+    // }
+
+    useEffect(() => {
+        fetchBooks();
+    });
+
+    // bookList.map((book) => {
+    //     book.isbn = isbn;
+    //     book.title = title;
+    //     book.author = author;
+    //     book.publisher = publisher;
+    //     book.contents = contents;
+    //     book.url = url;
+    // })
+
+    return (
+        <TableContainer>
+            {bookList.map((book) => (
+                <Table>
+                <Thead>
+                    {/* <Tr>
+                        <Th>Thumbnail</Th>
+                        <Th>Title</Th>
+                        <Th>Author</Th>
+                        <Th>Publisher</Th>
+                        <Th>Contents</Th>
+                    </Tr> */}
+                </Thead>
+                <Tbody>
+                <Tr>
+                    <Td><img src={book.thumbnail} /></Td>
+                </Tr>
+                <Tr>
+                    <Td><Link to={book.url}>{book.title}</Link></Td>
+                </Tr>
+                <Tr>
+                    <Td>{book.author} | {book.publisher}</Td>
+                </Tr>
+                </Tbody>
+                <Tfoot></Tfoot>
+            </Table>
+            ))}
+                
+            </TableContainer>
+    );
 };
 
 
